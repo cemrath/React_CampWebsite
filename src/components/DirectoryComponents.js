@@ -1,67 +1,78 @@
 import React, { Component } from 'react';
+import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
 
 class Directory extends Component {
-    // if a constructor method used in React components must always include a "props" argument.
-    // if a constructor method used in React components must always have "super(props)" as its first line.
+    // class components that hold "local state" always consist of a "constructor method".
+    // a "constructor method" used in React components must always include a "props" argument.
+    // a "constructor method" used in React components must always have "super(props)" as its first line.
     // a constructor method is not always required in a react component.
     constructor(props){
         super(props);
         this.state = {
-            campsites: [
-                {
-                    id: 0,
-                    name: 'React Lake Campground',
-                    image: 'assets/images/react-lake.jpg',
-                    elevation: 1233,
-                    description: "Nestled in the foothills of the Chrome Mountains, this campground on the shores of the pristine React Lake is a favorite for fly fishers."
-                },
-                {
-                  id: 1,
-                  name: 'Chrome River Campground ',
-                  image: 'assets/images/chrome-river.jpg',
-                  elevation: 877,
-                  description: "Spend a few sunny days and starry nights beneath a canopy of old-growth firs at this enchanting spot by the Chrome River."
-                },
-                {
-                    id: 2,
-                    name: 'Breadcrumb Trail Campground',
-                    image: 'assets/images/breadcrumb-trail.jpg',
-                    elevation: 2901,
-                    description: "Let NuCamp be your guide to this off-the-beaten-path, hike-in-only campground."
-                },
-                {
-                    id: 3,
-                    name: 'Redux Woods Campground',
-                    image: 'assets/images/redux-woods.jpg',
-                    elevation: 42,
-                    description: "You'll never want to leave this hidden gem, deep within the lush Redux Woods."
-                }
-
-            ],
+            selectedCampsite: null
         };
     }
 
+    // method to change/declate the state of constructor when a campsite is selected
+    onCampsiteSelect(campsite){
+        // NEVER use an assigment operator to update the state directly. 
+        // THE WRONG WAY => "this.state.selectedCampsite = campsite;"
+        // To change a state outside of the constructor, always use the "setState method" as below. This allows React to make updates to the DOM propoerly. This is what makes React a declarative VS an imperative library.
+        this.setState({selectedCampsite: campsite});
+    }
+
+    // method to render the selected campsite
+    renderSelectedCampsite(campsite){
+        if(campsite) {
+            return(
+                <Card>
+                <CardImg top src={campsite.image} alt={campsite.name} />
+                <CardBody>
+                     <CardTitle>{campsite.name}</CardTitle>
+                     <CardText>{campsite.description}</CardText>
+                </CardBody>
+            </Card>
+            );
+        }
+        return<div />;
+    }
+
+
     // every react compoment must return() one react element. Though that element may have multiple child elements. the return() is placed inside of a render() method.
     render(){
-        const directory = this.state.campsites.map(campsite => {
+        // "this.props.campsites" is used to remotely access the parent compoment App.js local state. Otherwise if the state was local to this component, we would just this "this.state.campsites"
+        const directory = this.props.campsites.map(campsite => {
             return(
-                <div key={campsite.id} className="col">
-                    <img src={campsite.image} alt={campsite.name} />
-                    <h2>{campsite.name}</h2>
-                    <p>{campsite.description}</p>
+                <div key={campsite.id} className="col-md-5 m-1">
+                    {/* When someone clicks on the card it becomes the selected campsite in the local state */}
+                    <Card onClick={()=> this.onCampsiteSelect(campsite)}>
+                        <CardImg width="100%" src={campsite.image} alt={campsite.name} /  >
+                        <CardImgOverlay>
+                            <CardTitle>{campsite.name}</CardTitle>
+                        </CardImgOverlay>
+                    </Card>
                 </div>
             );
         })
 
+            // This is the final return that sends data back to the parent component.  
+            //Note how all of the other returns just shares data locally. 
+            //Also note that this first top level return inside of the render method.
+        
         return (
             <div className="container">
                 <div className="row">
                     {directory}
                 </div>
+                <div className="row">
+                    <div className="col-md-5 m-1">
+                        {this.renderSelectedCampsite(this.state.selectedCampsite)}
+                    </div>
+                </div>
             </div>
         );
     }
-
 }
+
 
 export default Directory;
