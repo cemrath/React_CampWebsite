@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
+import CampsiteInfo from './CampsiteInfoComponent';
+import { Card, CardImg, CardImgOverlay,  CardTitle } from 'reactstrap';
 
 class Directory extends Component {
     // class components that hold "local state" always consist of a "constructor method".
@@ -20,23 +21,6 @@ class Directory extends Component {
         // To change a state outside of the constructor, always use the "setState method" as below. This allows React to make updates to the DOM propoerly. This is what makes React a declarative VS an imperative library.
         this.setState({selectedCampsite: campsite});
     }
-
-    // method to render the selected campsite
-    renderSelectedCampsite(campsite){
-        if(campsite) {
-            return(
-                <Card>
-                <CardImg top src={campsite.image} alt={campsite.name} />
-                <CardBody>
-                     <CardTitle>{campsite.name}</CardTitle>
-                     <CardText>{campsite.description}</CardText>
-                </CardBody>
-            </Card>
-            );
-        }
-        return<div />;
-    }
-
 
     // every react compoment must return() one react element. Though that element may have multiple child elements. the return() is placed inside of a render() method.
     render(){
@@ -64,11 +48,8 @@ class Directory extends Component {
                 <div className="row">
                     {directory}
                 </div>
-                <div className="row">
-                    <div className="col-md-5 m-1">
-                        {this.renderSelectedCampsite(this.state.selectedCampsite)}
-                    </div>
-                </div>
+                <CampsiteInfo campsite={this.state.selectedCampsite}/>
+
             </div>
         );
     }
