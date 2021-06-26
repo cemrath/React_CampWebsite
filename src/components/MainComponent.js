@@ -55,8 +55,6 @@ class Main extends Component {
 
         return (
             <div>
-                {console.clear()}
-                {console.log(this.state.partners)}
                 <Header />
                 <Switch>
                     <Route path='/home' component={HomePage} />
