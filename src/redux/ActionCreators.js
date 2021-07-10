@@ -40,7 +40,6 @@ export const addCampsites = campsites => ({
 });
 
 // Comments Handling
-
 export const fetchComments = () => dispatch => {
     return fetch(baseUrl + 'comments')
         .then(response => {
@@ -109,7 +108,6 @@ export const postComment = (campsiteId, rating, author, text) => dispatch => {
 };
 
 // Promotion Handling
-
 export const fetchPromotions = () => dispatch => {
     dispatch(promotionsLoading());
 
